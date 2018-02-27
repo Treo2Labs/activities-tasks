@@ -11,14 +11,14 @@
         "php": "^7.1"
     },
     "extra": {
-        "treoId": "OneGeo",
+        "treoId": "ActivitiesTasks",
         "name": {
-            "default": "1-GEO",
-            "de_DE": "1-GEO"
+            "default": "Activities&Tasks",
+            "de_DE": "Termin- und Aufgaben-Verwaltung"
         },
         "description": {
-            "default": "-",
-            "de_DE": "-"
+            "default": "Planning activities and tasks for TreoCRM entities",
+            "de_DE": "Termin- und Aufgaben-Verwaltung bei TreoCRM-Entities"
         }
     }
 }
