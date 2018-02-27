@@ -9,5 +9,16 @@
     ],
     "require": {
         "php": "^7.1"
+    },
+    "extra": {
+        "treoId": "OneGeo",
+        "name": {
+            "default": "1-GEO",
+            "de_DE": "1-GEO"
+        },
+        "description": {
+            "default": "-",
+            "de_DE": "-"
+        }
     }
 }
