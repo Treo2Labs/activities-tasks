@@ -9,7 +9,8 @@
   ],
   "require": {
     "php": "^7.1",
-    "treo/treo": "^1.7.2"
+    "treo/treo": "^1.7.3",
+    "treo-module/espo-crm": "^1.0.0"
   },
   "extra": {
     "treoId": "ActivitiesTasks",
