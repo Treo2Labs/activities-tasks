@@ -1,24 +1,25 @@
 {
-    "name": "treo-module/activitiestasks",
-    "description": "ActivitiesTasks module for TreoPIM",
-    "authors": [
-        {
-            "name": "Roman Ratsun",
-            "email": "r.ratsun@zinitsolutions.com"
-        }
-    ],
-    "require": {
-        "php": "^7.1"
-    },
-    "extra": {
-        "treoId": "ActivitiesTasks",
-        "name": {
-            "default": "Activities&Tasks",
-            "de_DE": "Termin- und Aufgaben-Verwaltung"
-        },
-        "description": {
-            "default": "Planning activities and tasks for TreoCRM entities",
-            "de_DE": "Termin- und Aufgaben-Verwaltung bei TreoCRM-Entities"
-        }
+  "name": "treo-module/activitiestasks",
+  "description": "ActivitiesTasks module for TreoPIM",
+  "authors": [
+    {
+      "name": "Roman Ratsun",
+      "email": "r.ratsun@zinitsolutions.com"
     }
+  ],
+  "require": {
+    "php": "^7.1",
+    "treo/treo": "^1.7.2"
+  },
+  "extra": {
+    "treoId": "ActivitiesTasks",
+    "name": {
+      "default": "Activities&Tasks",
+      "de_DE": "Termin- und Aufgaben-Verwaltung"
+    },
+    "description": {
+      "default": "Planning activities and tasks for TreoCRM entities",
+      "de_DE": "Termin- und Aufgaben-Verwaltung bei TreoCRM-Entities"
+    }
+  }
 }
