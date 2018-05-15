@@ -21,23 +21,11 @@
 
 declare(strict_types=1);
 
-namespace Espo\Modules\ActivitiesTasks\Listeners;
+namespace Espo\Modules\ActivitiesTasks\Configs;
 
-use Espo\Modules\TreoCore\Listeners\EntityManager as EntityManagerListener;
-
-/**
- * EntityManager listener
- *
- * @author r.ratsun <r.ratsun@zinitsolutions.com>
- */
-class EntityManager extends EntityManagerListener
-{
-    /**
-     * @var array
-     */
-    protected $scopes
-        = [
-            'hasActivities',
-            'hasTasks'
-        ];
-}
+return [
+    'edited' => [
+        'hasActivities',
+        'hasTasks'
+    ]
+];
