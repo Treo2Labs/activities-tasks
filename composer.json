@@ -9,7 +9,7 @@
   ],
   "require": {
     "treo/treo": "^1.11",
-    "treo-module/espo-crm": "^1.1"
+    "treo-module/crm": "^1.2"
   },
   "extra": {
     "treoId": "ActivitiesTasks",
