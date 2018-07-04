@@ -19,7 +19,7 @@
  * for your own needs, if source code is provided.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Espo\Modules\ActivitiesTasks\Metadata;
 
@@ -42,6 +42,14 @@ class Metadata extends AbstractMetadata
      */
     public function modify(array $data): array
     {
+        // add dashlets
+        if (!isset($data['dashlets']['Activities']) && isset($data['hidedDashlets']['Activities'])) {
+            $data['dashlets']['Activities'] = $data['hidedDashlets']['Activities'];
+        }
+        if (!isset($data['dashlets']['Tasks']) && isset($data['hidedDashlets']['Tasks'])) {
+            $data['dashlets']['Tasks'] = $data['hidedDashlets']['Tasks'];
+        }
+
         // add activities
         $data = $this->addActivities($data);
 
@@ -97,7 +105,7 @@ class Metadata extends AbstractMetadata
                         "view"     => "crm:views/record/panels/activities",
                         "aclScope" => "Activities"
                     ];
-                    $panelData["history"]    = [
+                    $panelData["history"] = [
                         "name"     => "history",
                         "label"    => "History",
                         "view"     => "crm:views/record/panels/history",
