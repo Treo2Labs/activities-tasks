@@ -14,12 +14,10 @@
   "extra": {
     "treoId": "ActivitiesTasks",
     "name": {
-      "default": "Activities&Tasks",
-      "de_DE": "Termin- und Aufgaben-Verwaltung"
+      "default": "Activities and Tasks"
     },
     "description": {
-      "default": "Planning activities and tasks for TreoCRM entities",
-      "de_DE": "Termin- und Aufgaben-Verwaltung bei TreoCRM-Entities"
+      "default": "The module enables to plan and fulfil activities (meetings, calls, e-mails) and tasks for any entity in the system."
     }
   }
 }
