@@ -1,3 +1,5 @@
+    * BUG #66215 : При додаванні нових дашлетів не відображаються My Calls, My Inbox, My Meetings (Roman Ratsun)
+
 1.3.9  2018-07-10 8:35:57 Europe/Kiev
     * BUG #66081 : При активном модуле Activities&Tasks возможность настроек сущностей call meeting должна быть возможна  (Roman Ratsun)
 
