@@ -49,6 +49,15 @@ class Metadata extends AbstractMetadata
         if (!isset($data['dashlets']['Tasks']) && isset($data['hidedDashlets']['Tasks'])) {
             $data['dashlets']['Tasks'] = $data['hidedDashlets']['Tasks'];
         }
+        if (!isset($data['dashlets']['Calls']) && isset($data['hidedDashlets']['Calls'])) {
+            $data['dashlets']['Calls'] = $data['hidedDashlets']['Calls'];
+        }
+        if (!isset($data['dashlets']['Emails']) && isset($data['hidedDashlets']['Emails'])) {
+            $data['dashlets']['Emails'] = $data['hidedDashlets']['Emails'];
+        }
+        if (!isset($data['dashlets']['Meetings']) && isset($data['hidedDashlets']['Meetings'])) {
+            $data['dashlets']['Meetings'] = $data['hidedDashlets']['Meetings'];
+        }
 
         // add activities
         $data = $this->addActivities($data);
