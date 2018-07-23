@@ -8,7 +8,6 @@
     }
   ],
   "require": {
-    "treo/treo": "^1.11",
     "treo-module/crm": "^1.2"
   },
   "extra": {
