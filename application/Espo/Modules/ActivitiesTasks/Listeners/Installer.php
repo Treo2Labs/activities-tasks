@@ -42,6 +42,11 @@ class Installer extends AbstractListener
         $this->setToLabelManager($delimiter);
     }
 
+    /**
+     * Set navigation group to config
+     *
+     * @param string $delimiter
+     */
     protected function setToConfig(string $delimiter)
     {
         $tabList = $this->getConfig()->get('tabList');
@@ -61,6 +66,11 @@ class Installer extends AbstractListener
         $this->getConfig()->save();
     }
 
+    /**
+     * Save navigation group in label manager
+     *
+     * @param string $delimiter
+     */
     protected function setToLabelManager(string $delimiter)
     {
         $scope     = 'Global';
