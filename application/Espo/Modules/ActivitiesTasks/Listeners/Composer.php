@@ -45,7 +45,6 @@ class Composer extends AbstractListener
             $this->setToConfig($navGroupName);
             $this->setTranslate($navGroupName);
         }
-
     }
 
     /**
