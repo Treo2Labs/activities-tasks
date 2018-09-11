@@ -43,7 +43,6 @@ class Composer extends AbstractListener
             $navGroupName = "Activity";
 
             $this->setToConfig($navGroupName);
-            $this->setTranslate($navGroupName);
         }
     }
 
@@ -54,39 +53,95 @@ class Composer extends AbstractListener
      */
     protected function setToConfig(string $navGroup): void
     {
-        if ($this->getConfig()->has('twoLevelTabList')) {
+        $navMenu = false;
+        $items = [
+            "Task",
+            "Meeting",
+            "Call"
+        ];
+
+        foreach ($this->getContainer()->get('metadata')->getModuleList() as $module) {
+            if ($module == "NavMenu") {
+                $navMenu = true;
+                break;
+            }
+        }
+
+        if ($navMenu) {
             $tabField = 'twoLevelTabList';
         } else {
             $tabField = 'tabList';
         }
 
         $tabList = $this->getConfig()->get($tabField);
+
+        if (!$navMenu) {
+            $tabList = $this->getNewTabList($items, $tabList);
+        } else {
+            $tabList = $this->getNewTwoLevelTabList($items, $tabList, $navGroup);
+            $this->setTranslate($navGroup);
+        }
+
+        if (!is_null($tabList)) {
+            $this->getConfig()->set($tabField, $tabList);
+            $this->getConfig()->save();
+        }
+    }
+
+    /**
+     * Gen new tab list
+     *
+     * @param array $items
+     * @param array $list
+     *
+     * @return array|null
+     */
+    protected function getNewTabList(array $items, array $list): array
+    {
+        if (!empty($result = array_diff($items, $list))) {
+            foreach ($result as $item) {
+                $list[] = $item;
+            }
+
+            return $list;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get new two level tab list
+     *
+     * @param array $items
+     * @param array $list
+     * @param string $navGroup
+     *
+     * @return array|null
+     */
+    protected function getNewTwoLevelTabList(array $items, array $list, string $navGroup): array
+    {
         $result = false;
 
-        foreach ($tabList as $tab) {
-            if ($tab instanceof \stdClass) {
-                if ($tab->name == $navGroup) {
-                    $result = true;
-                }
+        foreach ($list as $tab) {
+            if ($tab instanceof \stdClass && $tab->name == $navGroup) {
+                $result = true;
+                break;
             }
         }
 
         if (!$result) {
             $navActivities = [
-                "id"    => '_delimiter_' . substr(Util::generateId(), 0, 8),
-                "name"  => $navGroup,
-                "items" => [
-                    "Task",
-                    "Meeting",
-                    "Call"
-                ]
+                "id" => '_delimiter_' . substr(Util::generateId(), 0, 8),
+                "name" => $navGroup,
+                "items" => $items
             ];
 
-            $tabList[] = (object)$navActivities;
+            $list[] = (object)$navActivities;
 
-            $this->getConfig()->set($tabField, $tabList);
-            $this->getConfig()->save();
+            return $list;
         }
+
+        return null;
     }
 
     /**
