@@ -47,6 +47,20 @@ class Composer extends AbstractListener
     }
 
     /**
+     * After delete module event
+     *
+     * @param array $data
+     */
+    public function afterDeleteModule(array $data): void
+    {
+        if (!empty($data['id']) && $data['id'] == 'ActivitiesTasks') {
+            $navGroupName = "Activity";
+
+            $this->removeFromConfig($navGroupName);
+        }
+    }
+
+    /**
      * Set navigation group to config
      *
      * @param string $navGroup
@@ -83,6 +97,48 @@ class Composer extends AbstractListener
         }
 
         if (!is_null($tabList)) {
+            $this->getConfig()->set($tabField, $tabList);
+            $this->getConfig()->save();
+        }
+    }
+
+    /**
+     * Remove navigation group from config
+     *
+     * @param string $navGroup
+     */
+    protected function removeFromConfig(string $navGroup): void
+    {
+        $navMenu = false;
+        $items = [
+            "Task",
+            "Meeting",
+            "Call"
+        ];
+
+        foreach ($this->getContainer()->get('metadata')->getModuleList() as $module) {
+            if ($module == "NavMenu") {
+                $navMenu = true;
+                break;
+            }
+        }
+
+        if ($navMenu) {
+            $tabField = 'twoLevelTabList';
+        } else {
+            $tabField = 'tabList';
+        }
+
+        $tabList = $this->getConfig()->get($tabField);
+
+        foreach ($tabList as $key => $tab) {
+            if (in_array($tab, $items) ||
+                ($tab instanceof \stdClass && $tab->name == $navGroup)) {
+                unset($tabList[$key]);
+            }
+        }
+
+        if (!empty($tabList)) {
             $this->getConfig()->set($tabField, $tabList);
             $this->getConfig()->save();
         }
