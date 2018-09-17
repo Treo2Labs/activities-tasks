@@ -23,8 +23,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\ActivitiesTasks\Migration;
 
-use Espo\Modules\TreoCore\Core\Migration\AbstractMigration;
-use Espo\Modules\Pim\Hooks\Category\CategoryTreeHook;
+use Treo\Core\Migration\AbstractMigration;
 
 /**
  * Migration class for version 1.4.2

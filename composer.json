@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "treo/treopim": "^1.12.6",
+    "treo/treopim": "^1.14.1",
     "treo-module/crm": "^1.2"
   },
   "extra": {
