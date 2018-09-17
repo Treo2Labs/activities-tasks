@@ -40,26 +40,32 @@ class Composer extends AbstractListener
     public function afterInstallModule(array $data): void
     {
         if (!empty($data['id']) && $data['id'] == 'ActivitiesTasks') {
-            $navGroupName = "Activity";
-
-            $this->setToConfig($navGroupName);
+            $this->setToConfig();
         }
     }
 
     /**
-     * Set navigation group to config
+     * After delete module event
      *
-     * @param string $navGroup
+     * @param array $data
      */
-    protected function setToConfig(string $navGroup): void
+    public function afterDeleteModule(array $data): void
+    {
+        if (!empty($data['id']) && $data['id'] == 'ActivitiesTasks') {
+            $this->removeFromConfig();
+        }
+    }
+
+    /**
+     * Get navigation menu data
+     *
+     * @return array
+     */
+    protected function getData(): array
     {
         $navMenu = false;
-        $items = [
-            "Task",
-            "Meeting",
-            "Call"
-        ];
 
+        // check if Two-Level Navigation module installed
         foreach ($this->getContainer()->get('metadata')->getModuleList() as $module) {
             if ($module == "NavMenu") {
                 $navMenu = true;
@@ -67,23 +73,69 @@ class Composer extends AbstractListener
             }
         }
 
+        // tab field name in config
         if ($navMenu) {
             $tabField = 'twoLevelTabList';
         } else {
             $tabField = 'tabList';
         }
 
-        $tabList = $this->getConfig()->get($tabField);
+        // set data
+        $data = [
+            'tabList' => $this->getConfig()->get($tabField),
+            'tabField' => $tabField,
+            'items' => [
+                "Task",
+                "Meeting",
+                "Call"
+            ],
+            'navMenu' => $navMenu,
+            'navGroupName' => 'Activity'
+        ];
 
-        if (!$navMenu) {
-            $tabList = $this->getNewTabList($items, $tabList);
+        return $data;
+    }
+
+    /**
+     * Set navigation group to config
+     */
+    protected function setToConfig(): void
+    {
+        $data = $this->getData();
+
+        $tabList = $data['tabList'];
+
+        if (!$data['navMenu']) {
+            $tabList = $this->getNewTabList($data['items'], $tabList);
         } else {
-            $tabList = $this->getNewTwoLevelTabList($items, $tabList, $navGroup);
-            $this->setTranslate($navGroup);
+            $tabList = $this->getNewTwoLevelTabList($data['items'], $tabList, $data['navGroupName']);
+            $this->setTranslate($data['navGroupName']);
         }
 
         if (!is_null($tabList)) {
-            $this->getConfig()->set($tabField, $tabList);
+            $this->getConfig()->set($data['tabField'], $tabList);
+            $this->getConfig()->save();
+        }
+    }
+
+    /**
+     * Remove navigation group from config
+     */
+    protected function removeFromConfig(): void
+    {
+        $data = $this->getData();
+
+        $tabList = $data['tabList'];
+
+        foreach ($tabList as $key => $tab) {
+            if (in_array($tab, $data['items']) ||
+                ($tab instanceof \stdClass && $tab->name == $data['navGroupName'])) {
+                unset($tabList[$key]);
+            }
+        }
+
+        if (!empty($tabList)) {
+            $this->getConfig()->set($data['tabField'], $tabList);
             $this->getConfig()->save();
         }
     }
