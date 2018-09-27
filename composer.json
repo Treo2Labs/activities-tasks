@@ -8,8 +8,7 @@
     }
   ],
   "require": {
-    "treo/treopim": "^1.14.1",
-    "treo-module/crm": "^1.2"
+    "treo/treopim": "^1.14.1"
   },
   "extra": {
     "treoId": "ActivitiesTasks",
