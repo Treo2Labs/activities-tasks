@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Espo\Modules\ActivitiesTasks\Metadata;
 
-use Espo\Modules\TreoCore\Metadata\AbstractMetadata;
+use Treo\Metadata\AbstractMetadata;
 
 /**
  * Metadata
