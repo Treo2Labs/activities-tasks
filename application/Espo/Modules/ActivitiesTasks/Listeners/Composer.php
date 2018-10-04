@@ -23,9 +23,8 @@ declare(strict_types=1);
 
 namespace Espo\Modules\ActivitiesTasks\Listeners;
 
-use Espo\Core\ORM\EntityManager;
-use Espo\Modules\TreoCore\Listeners\AbstractListener;
 use Espo\Core\Utils\Util;
+use Treo\Listeners\AbstractListener;
 
 /**
  * Class Composer
