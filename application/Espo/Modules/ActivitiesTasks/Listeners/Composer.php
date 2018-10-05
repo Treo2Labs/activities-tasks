@@ -129,7 +129,13 @@ class Composer extends AbstractListener
         foreach ($tabList as $key => $tab) {
             if (in_array($tab, $data['items']) ||
                 ($tab instanceof \stdClass && $tab->name == $data['navGroupName'])) {
-                unset($tabList[$key]);
+                for ($i = (int)$key; $i < count($tabList) - 1; $i++) {
+                    if (isset($tabList[$i + 1])) {
+                        $tabList[$i] = $tabList[$i + 1];
+                    }
+                }
+
+                unset($tabList[count($tabList) - 1]);
             }
         }
 
