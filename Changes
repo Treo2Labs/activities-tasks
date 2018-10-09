@@ -1,3 +1,6 @@
+1.6.2  2018-10-09 12:46:07 Europe/Kiev
+    * BUG #69588 : Помилка в консолі та не працює сайт при встановленні/видаленні модуля Activities and Tasks та створенні груп (Roman Zablodskiy)
+
 1.5.1  2018-09-17 8:36:35 Europe/Kiev
     * BUG #68811 : При видаленому модулі Activities and Tasks пункти Tasks, Meetings, Calls відображаються в меню (Roman Zablodskiy)
 
