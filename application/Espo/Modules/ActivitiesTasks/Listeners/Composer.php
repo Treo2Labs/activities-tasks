@@ -31,6 +31,28 @@ use Treo\Listeners\AbstractListener;
  */
 class Composer extends AbstractListener
 {
+    const ACTIVITY_GROUP_ID = '_delimiter_activity';
+
+    /**
+     * @var array
+     */
+    protected $tabList = [];
+
+    /**
+     * @var array
+     */
+    protected $twoLevelTabList = [];
+
+    /**
+     * @var array
+     */
+    protected $items
+        = [
+            "Task",
+            "Meeting",
+            "Call"
+        ];
+
     /**
      * After install module event
      *
@@ -44,132 +66,76 @@ class Composer extends AbstractListener
     }
 
     /**
-     * Get navigation menu data
-     *
-     * @return array
-     */
-    protected function getData(): array
-    {
-        $config = $this->getConfig();
-
-        return [
-            'tabList' => $config->get('tabList'),
-            'twoLevelTabList' => $config->get('twoLevelTabList'),
-            'items' => [
-                "Task",
-                "Meeting",
-                "Call"
-            ],
-            'navGroupName' => 'Activity'
-        ];
-    }
-
-    /**
      * Set navigation group to config
      */
     protected function setToConfig(): void
     {
-        $data = $this->getData();
+        // prepare data
+        $this->tabList = $this->getConfig()->get('tabList');
+        $this->twoLevelTabList = $this->getConfig()->get('twoLevelTabList');
 
-        $tabList = $this->getNewTabList($data['items'], $data['tabList']);
+        // prepare TabList
+        $this->prepareTabList();
 
-        $twoLevelTabList
-            = $this->getNewTwoLevelTabList($data['items'], $data['twoLevelTabList'], $data['navGroupName']);
+        // prepare twoLevelTabList
+        $this->prepareTwoLevelTabList();
 
-        if (!empty($tabList) && !empty($twoLevelTabList)) {
-            $this->getConfig()->set('tabList', $tabList);
-            $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
-            $this->getConfig()->save();
-        }
+        // save
+        $this->getConfig()->set('tabList', $this->tabList);
+        $this->getConfig()->set('twoLevelTabList', $this->twoLevelTabList);
+        $this->getConfig()->save();
     }
 
     /**
-     * Gen new tab list
-     *
-     * @param array $items
-     * @param array $list
-     *
-     * @return array
+     * Prepare tab list
      */
-    protected function getNewTabList(array $items, array $list): array
+    protected function prepareTabList(): void
     {
-        if (!empty($result = array_diff($items, $list))) {
+        if (!empty($result = array_diff($this->items, $this->tabList))) {
             foreach ($result as $item) {
-                $list[] = $item;
+                $this->tabList[] = $item;
             }
         }
-
-        return $list;
     }
 
     /**
-     * Remove items of activity from navigation menu if they exist
-     *
-     * @param array $items
-     * @param array $list
-     * @param string $delimiter
-     *
-     * @return array
+     * Prepare two level tab list
      */
-    protected function removeActivityItems(array $items, array $list, string $delimiter): array
+    protected function prepareTwoLevelTabList(): void
     {
-        foreach ($list as $tabKey => $tab) {
-            if ($tab instanceof \stdClass && $tab->id != $delimiter) {
-                foreach ($tab->items as $key => $item) {
-                    if (in_array($item, $items)) {
-                        array_splice($tab->items, (int)$key, 1);
+        // create group
+        $this->createGroup();
+
+        foreach ($this->twoLevelTabList as $k => $item) {
+            if (!is_string($item) && $item->id == self::ACTIVITY_GROUP_ID) {
+                foreach ($this->items as $v) {
+                    if (!in_array($v, $item->items)) {
+                        $this->twoLevelTabList[$k]->items[] = $v;
                     }
                 }
-            } else {
-                if (in_array($tab, $items)) {
-                    array_splice($list, (int)$tabKey, 1);
-                }
             }
         }
-
-        return $list;
     }
 
     /**
-     * Get new two level tab list
+     * Create group
      *
-     * @param array $items
-     * @param array $list
-     * @param string $navGroup
-     *
-     * @return array
+     * @return bool
      */
-    protected function getNewTwoLevelTabList(array $items, array $list, string $navGroup): array
+    protected function createGroup(): bool
     {
-        $result = null;
-        $delimiter = '_delimiter_activity';
-
-        $list = $this->removeActivityItems($items, $list, $delimiter);
-
-        foreach ($list as $key => $tab) {
-            if (!in_array($tab, $items)) {
-                if ($tab instanceof \stdClass && $tab->id == $delimiter) {
-                    $result = (int)$key;
-                }
+        foreach ($this->twoLevelTabList as $item) {
+            if (!is_string($item) && $item->id == self::ACTIVITY_GROUP_ID) {
+                return false;
             }
         }
 
-        if (is_null($result)) {
-            $navActivities = [
-                "id" => $delimiter,
-                "name" => $navGroup,
-                "items" => $items
-            ];
+        $this->twoLevelTabList[] = (object)[
+            "id"    => self::ACTIVITY_GROUP_ID,
+            "name"  => 'Activity',
+            "items" => []
+        ];
 
-            $list[] = (object)$navActivities;
-        } else {
-            foreach ($items as $item) {
-                if (!in_array($item, $list[$result]->items)) {
-                    $list[$result]->items[] = $item;
-                }
-            }
-        }
-
-        return $list;
+        return true;
     }
 }
