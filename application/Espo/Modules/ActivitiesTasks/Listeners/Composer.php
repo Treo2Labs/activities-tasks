@@ -27,10 +27,33 @@ use Espo\Core\Utils\Util;
 use Treo\Listeners\AbstractListener;
 
 /**
- * Class Composer
+ * Listener Composer
  */
 class Composer extends AbstractListener
 {
+    const ACTIVITY_GROUP_ID = '_delimiter_activity';
+    const ACTIVITY_GROUP_NAME = 'Activity';
+
+    /**
+     * @var array
+     */
+    protected $tabList = [];
+
+    /**
+     * @var array
+     */
+    protected $twoLevelTabList = [];
+
+    /**
+     * @var array
+     */
+    protected $items
+        = [
+            "Task",
+            "Meeting",
+            "Call"
+        ];
+
     /**
      * After install module event
      *
@@ -39,173 +62,81 @@ class Composer extends AbstractListener
     public function afterInstallModule(array $data): void
     {
         if (!empty($data['id']) && $data['id'] == 'ActivitiesTasks') {
-            $this->setToConfig();
+            $this->prepareNavMenu();
         }
     }
 
     /**
-     * After delete module event
-     *
-     * @param array $data
+     * Prepare NavMenu
      */
-    public function afterDeleteModule(array $data): void
+    protected function prepareNavMenu(): void
     {
-        if (!empty($data['id']) && $data['id'] == 'ActivitiesTasks') {
-            $this->removeFromConfig();
+        // prepare data
+        $this->tabList = $this->getConfig()->get('tabList');
+        $this->twoLevelTabList = $this->getConfig()->get('twoLevelTabList');
+
+        // prepare TabList
+        $this->prepareTabList();
+
+        // prepare twoLevelTabList
+        $this->prepareTwoLevelTabList();
+
+        // save
+        $this->getConfig()->set('tabList', $this->tabList);
+        $this->getConfig()->set('twoLevelTabList', $this->twoLevelTabList);
+        $this->getConfig()->save();
+    }
+
+    /**
+     * Prepare tab list
+     */
+    protected function prepareTabList(): void
+    {
+        foreach ($this->items as $v) {
+            if (!in_array($v, $this->tabList)) {
+                $this->tabList[] = $v;
+            }
         }
     }
 
     /**
-     * Get navigation menu data
-     *
-     * @return array
+     * Prepare two level tab list
      */
-    protected function getData(): array
+    protected function prepareTwoLevelTabList(): void
     {
-        $navMenu = false;
+        // create group
+        $this->createGroup();
 
-        // check if Two-Level Navigation module installed
-        foreach ($this->getContainer()->get('metadata')->getModuleList() as $module) {
-            if ($module == "NavMenu") {
-                $navMenu = true;
-                break;
+        foreach ($this->twoLevelTabList as $k => $item) {
+            if (!is_string($item) && $item->id == self::ACTIVITY_GROUP_ID) {
+                foreach ($this->items as $v) {
+                    if (!in_array($v, $item->items)) {
+                        $this->twoLevelTabList[$k]->items[] = $v;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Create group
+     *
+     * @return bool
+     */
+    protected function createGroup(): bool
+    {
+        foreach ($this->twoLevelTabList as $item) {
+            if (!is_string($item) && $item->id == self::ACTIVITY_GROUP_ID) {
+                return false;
             }
         }
 
-        // tab field name in config
-        if ($navMenu) {
-            $tabField = 'twoLevelTabList';
-        } else {
-            $tabField = 'tabList';
-        }
-
-        // set data
-        $data = [
-            'tabList' => $this->getConfig()->get($tabField),
-            'tabField' => $tabField,
-            'items' => [
-                "Task",
-                "Meeting",
-                "Call"
-            ],
-            'navMenu' => $navMenu,
-            'navGroupName' => 'Activity'
+        $this->twoLevelTabList[] = (object)[
+            "id"    => self::ACTIVITY_GROUP_ID,
+            "name"  => self::ACTIVITY_GROUP_NAME,
+            "items" => []
         ];
 
-        return $data;
-    }
-
-    /**
-     * Set navigation group to config
-     */
-    protected function setToConfig(): void
-    {
-        $data = $this->getData();
-
-        $tabList = $data['tabList'];
-
-        if (!$data['navMenu']) {
-            $tabList = $this->getNewTabList($data['items'], $tabList);
-        } else {
-            $tabList = $this->getNewTwoLevelTabList($data['items'], $tabList, $data['navGroupName']);
-            $this->setTranslate($data['navGroupName']);
-        }
-
-        if (!is_null($tabList)) {
-            $this->getConfig()->set($data['tabField'], $tabList);
-            $this->getConfig()->save();
-        }
-    }
-
-    /**
-     * Remove navigation group from config
-     */
-    protected function removeFromConfig(): void
-    {
-        $data = $this->getData();
-
-        $tabList = $data['tabList'];
-
-        foreach ($tabList as $key => $tab) {
-            if (in_array($tab, $data['items']) ||
-                ($tab instanceof \stdClass && $tab->name == $data['navGroupName'])) {
-                unset($tabList[$key]);
-            }
-        }
-
-        if (!empty($tabList)) {
-            $this->getConfig()->set($data['tabField'], $tabList);
-            $this->getConfig()->save();
-        }
-    }
-
-    /**
-     * Gen new tab list
-     *
-     * @param array $items
-     * @param array $list
-     *
-     * @return array|null
-     */
-    protected function getNewTabList(array $items, array $list): array
-    {
-        if (!empty($result = array_diff($items, $list))) {
-            foreach ($result as $item) {
-                $list[] = $item;
-            }
-
-            return $list;
-        }
-
-        return null;
-    }
-
-    /**
-     * Get new two level tab list
-     *
-     * @param array $items
-     * @param array $list
-     * @param string $navGroup
-     *
-     * @return array|null
-     */
-    protected function getNewTwoLevelTabList(array $items, array $list, string $navGroup): array
-    {
-        $result = false;
-
-        foreach ($list as $tab) {
-            if ($tab instanceof \stdClass && $tab->name == $navGroup) {
-                $result = true;
-                break;
-            }
-        }
-
-        if (!$result) {
-            $navActivities = [
-                "id" => '_delimiter_' . substr(Util::generateId(), 0, 8),
-                "name" => $navGroup,
-                "items" => $items
-            ];
-
-            $list[] = (object)$navActivities;
-
-            return $list;
-        }
-
-        return null;
-    }
-
-    /**
-     * Set translate to navigation group
-     *
-     * @param string $navGroup
-     */
-    protected function setTranslate(string $navGroup): void
-    {
-        $scope     = 'Global';
-        $category  = 'navMenuDelimiters';
-
-        $this->getLanguage()->set($scope, $category, $navGroup, $navGroup);
-        $this->getLanguage()->save();
+        return true;
     }
 }
