@@ -27,11 +27,12 @@ use Espo\Core\Utils\Util;
 use Treo\Listeners\AbstractListener;
 
 /**
- * Class Composer
+ * Listener Composer
  */
 class Composer extends AbstractListener
 {
     const ACTIVITY_GROUP_ID = '_delimiter_activity';
+    const ACTIVITY_GROUP_NAME = 'Activity';
 
     /**
      * @var array
@@ -61,14 +62,14 @@ class Composer extends AbstractListener
     public function afterInstallModule(array $data): void
     {
         if (!empty($data['id']) && $data['id'] == 'ActivitiesTasks') {
-            $this->setToConfig();
+            $this->prepareNavMenu();
         }
     }
 
     /**
-     * Set navigation group to config
+     * Prepare NavMenu
      */
-    protected function setToConfig(): void
+    protected function prepareNavMenu(): void
     {
         // prepare data
         $this->tabList = $this->getConfig()->get('tabList');
@@ -91,9 +92,9 @@ class Composer extends AbstractListener
      */
     protected function prepareTabList(): void
     {
-        if (!empty($result = array_diff($this->items, $this->tabList))) {
-            foreach ($result as $item) {
-                $this->tabList[] = $item;
+        foreach ($this->items as $v) {
+            if (!in_array($v, $this->tabList)) {
+                $this->tabList[] = $v;
             }
         }
     }
@@ -132,7 +133,7 @@ class Composer extends AbstractListener
 
         $this->twoLevelTabList[] = (object)[
             "id"    => self::ACTIVITY_GROUP_ID,
-            "name"  => 'Activity',
+            "name"  => self::ACTIVITY_GROUP_NAME,
             "items" => []
         ];
 
