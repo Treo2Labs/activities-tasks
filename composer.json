@@ -8,7 +8,7 @@
     }
   ],
   "require": {
-    "treo/treopim": "^1.14.3"
+    "treo/treopim": "^2.0.0"
   },
   "extra": {
     "treoId": "ActivitiesTasks",
