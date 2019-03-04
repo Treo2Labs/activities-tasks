@@ -43,9 +43,9 @@ class V1Dot8Dot2 extends AbstractMigration
                     $twoLevelTabList[$key]->iconClass = "fas fa-list-alt";
                 }
             }
-        }
 
-        $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
-        $this->getConfig()->save();
+            $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
+            $this->getConfig()->save();
+        }
     }
 }
