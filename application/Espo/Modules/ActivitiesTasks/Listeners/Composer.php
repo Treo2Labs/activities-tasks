@@ -134,7 +134,8 @@ class Composer extends AbstractListener
         $this->twoLevelTabList[] = (object)[
             "id"    => self::ACTIVITY_GROUP_ID,
             "name"  => self::ACTIVITY_GROUP_NAME,
-            "items" => []
+            "items" => [],
+            "iconClass" => "fas fa-list-alt"
         ];
 
         return true;
