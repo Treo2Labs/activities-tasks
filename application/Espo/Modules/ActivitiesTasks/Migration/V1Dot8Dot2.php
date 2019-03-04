@@ -38,14 +38,19 @@ class V1Dot8Dot2 extends AbstractMigration
     public function up(): void
     {
         if (!empty($twoLevelTabList = $this->getConfig()->get('twoLevelTabList'))) {
+            $changed = false;
+
             foreach ($twoLevelTabList as $key => $item) {
                 if ($item->id == '_delimiter_activity') {
                     $twoLevelTabList[$key]->iconClass = "fas fa-list-alt";
+                    $changed = true;
                 }
             }
 
-            $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
-            $this->getConfig()->save();
+            if ($changed) {
+                $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
+                $this->getConfig()->save();
+            }
         }
     }
 }
