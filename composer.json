@@ -1,27 +1,27 @@
 {
-  "name": "treo-module/activitiestasks",
-  "description": "ActivitiesTasks module for TreoPIM",
-  "authors": [
-    {
-      "name": "Roman Ratsun",
-      "email": "r.ratsun@treolabs.com"
+    "name": "treo-module/activitiestasks",
+    "description": "ActivitiesTasks module for TreoPIM",
+    "authors": [
+        {
+            "name": "Roman Ratsun",
+            "email": "r.ratsun@treolabs.com"
+        }
+    ],
+    "require": {
+        "treolabs/treocore": "^3.12.0"
+    },
+    "extra": {
+        "treoId": "ActivitiesTasks",
+        "name": {
+            "default": "Activities and Tasks"
+        },
+        "description": {
+            "default": "The module enables to plan and fulfil activities (meetings, calls, e-mails) and tasks for any entity in the system."
+        },
+        "tags": [
+            "manage",
+            "planing",
+            "usability"
+        ]
     }
-  ],
-  "require": {
-    "treolabs/treocore": "^3.12.0"
-  },
-  "extra": {
-    "treoId": "ActivitiesTasks",
-    "name": {
-      "default": "Activities and Tasks"
-    },
-    "description": {
-      "default": "The module enables to plan and fulfil activities (meetings, calls, e-mails) and tasks for any entity in the system."
-    },
-    "tags": [
-      "manage",
-      "planing",
-      "usability"
-    ]
-  }
 }

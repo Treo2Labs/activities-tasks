@@ -1,7 +1,7 @@
 {
-  "entity": true,
-  "layouts": true,
-  "tab": true,
-  "acl": true,
-  "aclPortal": true
+    "entity": true,
+    "layouts": true,
+    "tab": true,
+    "acl": true,
+    "aclPortal": true
 }
