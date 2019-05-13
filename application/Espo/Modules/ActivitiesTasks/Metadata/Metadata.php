@@ -85,13 +85,15 @@ class Metadata extends AbstractMetadata
                 }
 
                 // add link to entity
-                $data['entityDefs'][$entity]['links']['meetings'] = [
-                    "type"                        => "hasChildren",
-                    "entity"                      => "Meeting",
-                    "foreign"                     => "parent",
-                    "layoutRelationshipsDisabled" => true,
-                    "audited"                     => true
-                ];
+                if (!isset($data['entityDefs'][$entity]['links']['meetings'])) {
+                    $data['entityDefs'][$entity]['links']['meetings'] = [
+                        "type" => "hasChildren",
+                        "entity" => "Meeting",
+                        "foreign" => "parent",
+                        "layoutRelationshipsDisabled" => true,
+                        "audited" => true
+                    ];
+                }
 
                 // add to client defs
                 foreach (['detail', 'detailSmall'] as $panel) {
