@@ -1,13 +1,13 @@
 <?php
 /**
  * ActivitiesTasks
- * TreoLabs Free Module
+ * TreoPIM Premium Plugin
  * Copyright (c) TreoLabs GmbH
  *
- * This Software is the property of TreoLabs GmbH and is protected
+ * This Software is the property of Zinit Solutions GmbH and is protected
  * by copyright law - it is NOT Freeware and can be used only in one project
  * under a proprietary license, which is delivered along with this program.
- * If not, see <https://treolabs.com/eula>.
+ * If not, see <http://treopim.com/eula>.
  *
  * This Software is distributed as is, with LIMITED WARRANTY AND LIABILITY.
  * Any unauthorised use of this Software without a valid license is
@@ -21,14 +21,14 @@
 
 declare(strict_types=1);
 
-namespace Espo\Modules\ActivitiesTasks\Migration;
+namespace Treo\Migrations\ActivitiesTasks;
 
 use Treo\Core\Migration\AbstractMigration;
 
 /**
  * Migration class for version 1.4.2
  *
- * @author r.ratsun@zinitsolutions.com
+ * @author r.ratsun@treolabs.com
  */
 class V1Dot4Dot2 extends AbstractMigration
 {
