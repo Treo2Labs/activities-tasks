@@ -16,11 +16,11 @@
             "default": "Activities and Tasks"
         },
         "description": {
-            "default": "The module enables to plan and fulfil activities (meetings, calls, e-mails) and tasks for any entity in the system."
+            "default": "The module enables planning and fulfillment of activities (meetings, calls, e-mails) and tasks for any entity in the system."
         },
         "tags": [
             "manage",
-            "planing",
+            "planning",
             "usability"
         ]
     }
