@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace Espo\Modules\ActivitiesTasks\Listeners;
 
-use Espo\Core\Utils\Util;
 use Treo\Listeners\AbstractListener;
+use Treo\Core\EventManager\Event;
 
 /**
  * Listener Composer
@@ -57,11 +57,11 @@ class Composer extends AbstractListener
     /**
      * After install module event
      *
-     * @param array $data
+     * @param Event $event
      */
-    public function afterInstallModule(array $data): void
+    public function afterInstallModule(Event $event): void
     {
-        if (!empty($data['id']) && $data['id'] == 'ActivitiesTasks') {
+        if (!empty($event->getArgument('id')) && $event->getArgument('id') == 'ActivitiesTasks') {
             $this->prepareNavMenu();
         }
     }
