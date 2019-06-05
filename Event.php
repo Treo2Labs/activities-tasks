@@ -1,13 +1,13 @@
 <?php
 /**
  * ActivitiesTasks
- * TreoLabs Free Module
+ * TreoPIM Premium Plugin
  * Copyright (c) TreoLabs GmbH
  *
- * This Software is the property of TreoLabs GmbH and is protected
+ * This Software is the property of Zinit Solutions GmbH and is protected
  * by copyright law - it is NOT Freeware and can be used only in one project
  * under a proprietary license, which is delivered along with this program.
- * If not, see <https://treolabs.com/eula>.
+ * If not, see <http://treopim.com/eula>.
  *
  * This Software is distributed as is, with LIMITED WARRANTY AND LIABILITY.
  * Any unauthorised use of this Software without a valid license is
@@ -21,15 +21,16 @@
 
 declare(strict_types=1);
 
-namespace Espo\Modules\ActivitiesTasks\Listeners;
+namespace Treo\ModuleManagerEvents\ActivitiesTasks;
 
-use Treo\Listeners\AbstractListener;
-use Treo\Core\EventManager\Event;
+use Treo\Composer\AbstractEvent;
 
 /**
- * Listener Composer
+ * Class Event
+ *
+ * @author r.ratsun <r.ratsun@treolabs.com>
  */
-class Composer extends AbstractListener
+class Event extends AbstractEvent
 {
     const ACTIVITY_GROUP_ID = '_delimiter_activity';
     const ACTIVITY_GROUP_NAME = 'Activity';
@@ -55,25 +56,32 @@ class Composer extends AbstractListener
         ];
 
     /**
-     * After install module event
-     *
-     * @param Event $event
+     * @inheritdoc
      */
-    public function afterInstallModule(Event $event): void
+    public function afterInstall(): void
     {
-        if (!empty($event->getArgument('id')) && $event->getArgument('id') == 'ActivitiesTasks') {
-            $this->prepareNavMenu();
-        }
+        $this->prepareNavMenu();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete(): void
+    {
+    }
+
 
     /**
      * Prepare NavMenu
      */
     protected function prepareNavMenu(): void
     {
+        // get config
+        $config = $this->getContainer()->get('config');
+
         // prepare data
-        $this->tabList = $this->getConfig()->get('tabList');
-        $this->twoLevelTabList = $this->getConfig()->get('twoLevelTabList');
+        $this->tabList = $config->get('tabList');
+        $this->twoLevelTabList = $config->get('twoLevelTabList');
 
         // prepare TabList
         $this->prepareTabList();
@@ -82,9 +90,9 @@ class Composer extends AbstractListener
         $this->prepareTwoLevelTabList();
 
         // save
-        $this->getConfig()->set('tabList', $this->tabList);
-        $this->getConfig()->set('twoLevelTabList', $this->twoLevelTabList);
-        $this->getConfig()->save();
+        $config->set('tabList', $this->tabList);
+        $config->set('twoLevelTabList', $this->twoLevelTabList);
+        $config->save();
     }
 
     /**
@@ -132,9 +140,9 @@ class Composer extends AbstractListener
         }
 
         $this->twoLevelTabList[] = (object)[
-            "id"    => self::ACTIVITY_GROUP_ID,
-            "name"  => self::ACTIVITY_GROUP_NAME,
-            "items" => [],
+            "id"        => self::ACTIVITY_GROUP_ID,
+            "name"      => self::ACTIVITY_GROUP_NAME,
+            "items"     => [],
             "iconClass" => "fas fa-list-alt"
         ];
 
