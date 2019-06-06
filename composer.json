@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "treolabs/treocore": "^3.18.0"
+        "treolabs/treocore": "~3.18.0"
     },
     "extra": {
         "treoId": "ActivitiesTasks",
