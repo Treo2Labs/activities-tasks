@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace Espo\Modules\ActivitiesTasks\Configs;
+namespace ActivitiesTasks\Configs;
 
 return [
     'edited' => [
