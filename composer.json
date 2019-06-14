@@ -8,7 +8,12 @@
         }
     ],
     "require": {
-        "treolabs/treocore": "~3.18.0"
+        "treolabs/treocore": "~3.19.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ActivitiesTasks\\": "app/"
+        }
     },
     "extra": {
         "treoId": "ActivitiesTasks",

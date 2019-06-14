@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace Treo\Migrations\ActivitiesTasks;
+namespace ActivitiesTasks\Migrations;
 
 use Treo\Core\Migration\AbstractMigration;
 

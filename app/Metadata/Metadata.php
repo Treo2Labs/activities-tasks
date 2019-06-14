@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace Espo\Modules\ActivitiesTasks\Metadata;
+namespace ActivitiesTasks\Metadata;
 
 use Treo\Metadata\AbstractMetadata;
 
@@ -32,7 +32,6 @@ use Treo\Metadata\AbstractMetadata;
  */
 class Metadata extends AbstractMetadata
 {
-
     /**
      * Modify
      *

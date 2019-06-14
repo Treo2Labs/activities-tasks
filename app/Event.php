@@ -21,9 +21,9 @@
 
 declare(strict_types=1);
 
-namespace Treo\ModuleManagerEvents\ActivitiesTasks;
+namespace ActivitiesTasks;
 
-use Treo\Composer\AbstractEvent;
+use Treo\Core\ModuleManager\AbstractEvent;
 
 /**
  * Class Event
