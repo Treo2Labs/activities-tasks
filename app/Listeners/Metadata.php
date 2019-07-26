@@ -21,26 +21,46 @@
 
 declare(strict_types=1);
 
-namespace Espo\Modules\ActivitiesTasks\Metadata;
 
-use Treo\Metadata\AbstractMetadata;
+namespace ActivitiesTasks\Listeners;
+
+use Treo\Core\EventManager\Event;
+use Treo\Listeners\AbstractListener;
 
 /**
- * Metadata
+ * Class Metadata
  *
- * @author r.ratsun <r.ratsun@zinitsolutions.com>
+ * @author r.ratsun <r.ratsun@treolabs.com>
  */
-class Metadata extends AbstractMetadata
+class Metadata extends AbstractListener
 {
 
     /**
      * Modify
      *
-     * @param array $data
-     *
-     * @return array
+     * @param Event $event
      */
-    public function modify(array $data): array
+    public function modify(Event $event): void
+    {
+        // get data
+        $data = $event->getArgument('data');
+
+        // add dashlets
+        $this->addDashlets($data);
+
+        // add activities
+        $this->addActivities($data);
+
+        // add tasks
+        $this->addTasks($data);
+
+        $event->setArgument('data', $data);
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function addDashlets(array &$data): void
     {
         // add dashlets
         if (!isset($data['dashlets']['Activities']) && isset($data['hidedDashlets']['Activities'])) {
@@ -58,24 +78,14 @@ class Metadata extends AbstractMetadata
         if (!isset($data['dashlets']['Meetings']) && isset($data['hidedDashlets']['Meetings'])) {
             $data['dashlets']['Meetings'] = $data['hidedDashlets']['Meetings'];
         }
-
-        // add activities
-        $data = $this->addActivities($data);
-
-        // add tasks
-        $data = $this->addTasks($data);
-
-        return $data;
     }
 
     /**
      * Add activities
      *
      * @param array $data
-     *
-     * @return array
      */
-    protected function addActivities(array $data): array
+    protected function addActivities(array &$data): void
     {
         foreach ($data['entityDefs'] as $entity => $row) {
             if (!empty($data['scopes'][$entity]['hasActivities'])) {
@@ -105,15 +115,15 @@ class Metadata extends AbstractMetadata
                     }
 
                     $panelData["activities"] = [
-                        "name"     => "activities",
-                        "label"    => "Activities",
-                        "view"     => "crm:views/record/panels/activities",
+                        "name" => "activities",
+                        "label" => "Activities",
+                        "view" => "crm:views/record/panels/activities",
                         "aclScope" => "Activities"
                     ];
                     $panelData["history"] = [
-                        "name"     => "history",
-                        "label"    => "History",
-                        "view"     => "crm:views/record/panels/history",
+                        "name" => "history",
+                        "label" => "History",
+                        "view" => "crm:views/record/panels/history",
                         "aclScope" => "Activities"
                     ];
 
@@ -121,18 +131,14 @@ class Metadata extends AbstractMetadata
                 }
             }
         }
-
-        return $data;
     }
 
     /**
      * Add tasks
      *
      * @param array $data
-     *
-     * @return array
      */
-    protected function addTasks(array $data): array
+    protected function addTasks(array &$data): void
     {
         foreach ($data['entityDefs'] as $entity => $row) {
             if (!empty($data['scopes'][$entity]['hasTasks'])) {
@@ -143,21 +149,21 @@ class Metadata extends AbstractMetadata
 
                 // add field
                 $data['entityDefs']['Task']['fields'][lcfirst($entity)] = [
-                    "type"     => "link",
+                    "type" => "link",
                     "readOnly" => true
                 ];
 
                 // add link
                 $data['entityDefs']['Task']['links'][lcfirst($entity)] = [
-                    "type"   => "belongsTo",
+                    "type" => "belongsTo",
                     "entity" => $entity
                 ];
 
                 // add link to entity
                 $data['entityDefs'][$entity]['links']['tasks'] = [
-                    "type"                        => "hasChildren",
-                    "entity"                      => "Task",
-                    "foreign"                     => "parent",
+                    "type" => "hasChildren",
+                    "entity" => "Task",
+                    "foreign" => "parent",
                     "layoutRelationshipsDisabled" => true
                 ];
 
@@ -171,9 +177,9 @@ class Metadata extends AbstractMetadata
                     }
 
                     $panelData["tasks"] = [
-                        "name"     => "tasks",
-                        "label"    => "Tasks",
-                        "view"     => "crm:views/record/panels/tasks",
+                        "name" => "tasks",
+                        "label" => "Tasks",
+                        "view" => "crm:views/record/panels/tasks",
                         "aclScope" => "Task"
                     ];
 
@@ -181,7 +187,5 @@ class Metadata extends AbstractMetadata
                 }
             }
         }
-
-        return $data;
     }
 }

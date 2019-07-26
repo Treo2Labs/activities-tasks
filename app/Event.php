@@ -1,13 +1,13 @@
 <?php
 /**
  * ActivitiesTasks
- * TreoPIM Premium Plugin
+ * TreoLabs Free Module
  * Copyright (c) TreoLabs GmbH
  *
- * This Software is the property of Zinit Solutions GmbH and is protected
+ * This Software is the property of TreoLabs GmbH and is protected
  * by copyright law - it is NOT Freeware and can be used only in one project
  * under a proprietary license, which is delivered along with this program.
- * If not, see <http://treopim.com/eula>.
+ * If not, see <https://treolabs.com/eula>.
  *
  * This Software is distributed as is, with LIMITED WARRANTY AND LIABILITY.
  * Any unauthorised use of this Software without a valid license is
@@ -21,9 +21,9 @@
 
 declare(strict_types=1);
 
-namespace Treo\ModuleManagerEvents\ActivitiesTasks;
+namespace ActivitiesTasks;
 
-use Treo\Composer\AbstractEvent;
+use Treo\Core\ModuleManager\AbstractEvent;
 
 /**
  * Class Event
@@ -140,9 +140,9 @@ class Event extends AbstractEvent
         }
 
         $this->twoLevelTabList[] = (object)[
-            "id"        => self::ACTIVITY_GROUP_ID,
-            "name"      => self::ACTIVITY_GROUP_NAME,
-            "items"     => [],
+            "id" => self::ACTIVITY_GROUP_ID,
+            "name" => self::ACTIVITY_GROUP_NAME,
+            "items" => [],
             "iconClass" => "fas fa-list-alt"
         ];
 
