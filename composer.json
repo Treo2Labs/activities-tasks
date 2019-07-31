@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "treolabs/treocore": "~3.20.0",
+        "treolabs/treocore": "~3.21.0",
         "treo-module/treo-crm": "~3.5.0"
     },
     "autoload": {
