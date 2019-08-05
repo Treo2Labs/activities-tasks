@@ -117,13 +117,13 @@ class Metadata extends AbstractListener
                     $panelData["activities"] = [
                         "name" => "activities",
                         "label" => "Activities",
-                        "view" => "crm:views/record/panels/activities",
+                        "view" => "activitiestasks:views/record/panels/activities",
                         "aclScope" => "Activities"
                     ];
                     $panelData["history"] = [
                         "name" => "history",
                         "label" => "History",
-                        "view" => "crm:views/record/panels/history",
+                        "view" => "activitiestasks:views/record/panels/history",
                         "aclScope" => "Activities"
                     ];
 
@@ -179,7 +179,7 @@ class Metadata extends AbstractListener
                     $panelData["tasks"] = [
                         "name" => "tasks",
                         "label" => "Tasks",
-                        "view" => "crm:views/record/panels/tasks",
+                        "view" => "activitiestasks:views/record/panels/tasks",
                         "aclScope" => "Task"
                     ];
 
