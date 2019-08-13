@@ -146,7 +146,7 @@ class Metadata extends AbstractListener
                 if (!in_array($entity, $data['entityDefs']['Task']['fields']['parent']['entityList'])) {
                     $data['entityDefs']['Task']['fields']['parent']['entityList'][] = $entity;
                 }
-
+                $name = $entity != 'Task' ? lcfirst($entity) : lcfirst($entity) . 'Child';
                 // add field
                 $data['entityDefs']['Task']['fields'][lcfirst($entity)] = [
                     "type" => "link",
@@ -154,11 +154,10 @@ class Metadata extends AbstractListener
                 ];
 
                 // add link
-                $data['entityDefs']['Task']['links'][lcfirst($entity)] = [
-                    "type" => "belongsTo",
-                    "entity" => $entity
+                $data['entityDefs']['Task']['links'][$name] = [
+                    "type" => $name,
+                    "entity" => $entity,
                 ];
-
                 // add link to entity
                 $data['entityDefs'][$entity]['links']['tasks'] = [
                     "type" => "hasChildren",

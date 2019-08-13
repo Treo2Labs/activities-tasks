@@ -216,6 +216,13 @@
       "layoutRelationshipsDisabled": true,
       "audited": true
     },
+    "calls": {
+      "type": "hasMany",
+      "entity": "Call",
+      "foreign": "leads",
+      "layoutRelationshipsDisabled": true,
+      "audited": true
+    },
     "tasks": {
       "type": "hasChildren",
       "entity": "Task",
