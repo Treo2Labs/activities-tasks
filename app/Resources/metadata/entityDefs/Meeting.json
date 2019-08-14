@@ -198,6 +198,29 @@
       "relationName": "entityTeam",
       "layoutRelationshipsDisabled": true
     },
+    "contacts": {
+      "type": "hasMany",
+      "relationName": "contactMeeting",
+      "entity": "Contact",
+      "foreign": "meetings",
+      "additionalColumns": {
+        "status": {
+          "type": "varchar",
+          "len": "36",
+          "default": "None"
+        },
+        "contactId": {
+          "type": "varchar",
+          "len": "36",
+          "default": null
+        },
+        "meetingId": {
+          "type": "varchar",
+          "len": "36",
+          "default": null
+        }
+      }
+    },
     "users": {
       "type": "hasMany",
       "entity": "User",
@@ -210,19 +233,6 @@
         }
       }
     },
-    "contacts": {
-      "type": "hasMany",
-      "entity": "Contact",
-      "foreign": "meetings",
-      "additionalColumns": {
-        "status": {
-          "type": "varchar",
-          "len": "36",
-          "default": "None"
-        }
-      },
-      "layoutRelationshipsDisabled": true
-    },
     "leads": {
       "type": "hasMany",
       "entity": "Lead",
@@ -233,8 +243,7 @@
           "len": "36",
           "default": "None"
         }
-      },
-      "layoutRelationshipsDisabled": true
+      }
     },
     "parent": {
       "type": "belongsToParent",

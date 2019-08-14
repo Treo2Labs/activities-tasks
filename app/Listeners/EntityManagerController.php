@@ -42,10 +42,28 @@ class EntityManagerController extends AbstractListener
     /**
      * @param Event $event
      */
+    public function afterActionCreateEntity(Event $event)
+    {
+        $data = $event->getArgument('data');
+        $this->setParams($data);
+    }
+
+    /**
+     * @param Event $event
+     */
     public function beforeActionUpdateEntity(Event $event)
     {
         $data = $event->getArgument('data');
+        $this->setParams($data);
+    }
 
+    /**
+     * Set all $this->params in scope
+     *
+     * @param $data
+     */
+    protected function setParams($data)
+    {
         $scope = $data->name;
 
         foreach ($this->params as $param) {
@@ -54,7 +72,6 @@ class EntityManagerController extends AbstractListener
             $this->setValueOfParam($scope, $param, $value);
         }
     }
-
 
     /**
      * Set param in metadata

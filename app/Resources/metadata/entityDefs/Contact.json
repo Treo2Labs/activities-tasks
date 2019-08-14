@@ -25,6 +25,7 @@
     },
     "links": {
         "meetings": {
+            "relationName": "contactMeeting",
             "type": "hasMany",
             "entity": "Meeting",
             "foreign": "contacts",
