@@ -39,14 +39,14 @@ Espo.define('activitiestasks:views/dashlets/activities', ['views/dashlets/abstra
 
         _template: '<div class="list-container">{{{list}}}</div>',
 
-        rowActionsView: 'crm:views/record/row-actions/activities-dashlet',
+        rowActionsView: 'activitiestasks:views/record/row-actions/activities-dashlet',
 
         defaultListLayout: {
             rows: [
                 [
                     {
                         name: 'ico',
-                        view: 'crm:views/fields/ico',
+                        view: 'activitiestasks:views/fields/ico',
                         params: {
                             notRelationship: true
                         }
@@ -68,7 +68,7 @@ Espo.define('activitiestasks:views/dashlets/activities', ['views/dashlets/abstra
                     [
                         {
                             name: 'ico',
-                            view: 'crm:views/fields/ico',
+                            view: 'activitiestasks:views/fields/ico',
                             params: {
                                 notRelationship: true
                             }
@@ -139,7 +139,7 @@ Espo.define('activitiestasks:views/dashlets/activities', ['views/dashlets/abstra
             this.collection.data.futureDays = this.getOption('futureDays');
 
             this.listenToOnce(this.collection, 'sync', function () {
-                this.createView('list', 'crm:views/record/list-activities-dashlet', {
+                this.createView('list', 'activitiestasks:views/record/list-activities-dashlet', {
                     el: this.options.el + ' > .list-container',
                     pagination: false,
                     type: 'list',
