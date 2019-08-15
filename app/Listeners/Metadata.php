@@ -34,7 +34,6 @@ use Treo\Listeners\AbstractListener;
  */
 class Metadata extends AbstractListener
 {
-
     /**
      * Modify
      *
