@@ -53,7 +53,8 @@ class Metadata extends AbstractListener
         // add tasks
         $this->addTasks($data);
 
-        $this->addLinkContactMeetingStatus($data);
+        $this->addLinkContactEntityStatus($data, 'Meeting');
+        $this->addLinkContactEntityStatus($data, 'Call');
 
         $this->addFieldsToSettings($data);
 
@@ -173,10 +174,12 @@ class Metadata extends AbstractListener
 
     /**
      * @param $data
+     * @param string $entity
      */
-    protected function addLinkContactMeetingStatus(&$data) :void
+    protected function addLinkContactEntityStatus(&$data, string $entity) :void
     {
-        $data['entityDefs']['Meeting']['fields']['contactsStatus'] =
+        $entityStatus = mb_strtolower($entity) . 'sStatus';
+        $data['entityDefs'][$entity]['fields']['contactsStatus'] =
             [
                 'type' => 'linkMultiple',
                 'layoutDetailDisabled' => true,
@@ -190,12 +193,12 @@ class Metadata extends AbstractListener
                 'exportDisabled' => true,
             ];
 
-        $data['entityDefs']['Meeting']['links']['contactsStatus'] =
+        $data['entityDefs'][$entity]['links']['contactsStatus'] =
             [
                 'type' => 'hasMany',
-                'relationName' => 'contactMeetingStatus',
+                'relationName' => "contact{$entity}Status",
                 'entity' => 'Contact',
-                'foreign' => 'meetingsStatus',
+                'foreign' => $entityStatus,
                 'additionalColumns' => [
                     'status' => [
                         'type' => 'varchar',
@@ -204,11 +207,11 @@ class Metadata extends AbstractListener
                     ]
                 ]
             ];
-        $data['entityDefs']['Contact']['links']['meetingsStatus'] =
+        $data['entityDefs']['Contact']['links'][$entityStatus] =
             [
                 'type' => 'hasMany',
-                'relationName' => 'contactMeetingStatus',
-                'entity' => 'Meeting',
+                'relationName' => "contact{$entity}Status",
+                'entity' => $entity,
                 'foreign' => 'contactsStatus',
             ];
     }
