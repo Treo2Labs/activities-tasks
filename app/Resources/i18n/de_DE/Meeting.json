@@ -7,7 +7,9 @@
     "description": "Beschreibung",
     "users": "Benutzer",
     "contacts": "Kontakte",
+    "contactsStatus": "Kontakte",
     "leads": "Interessenten",
+    "leadsStatus": "Interessenten",
     "reminders": "Erinnerungen",
     "account": "Firma",
     "acceptanceStatus": "Akzeptanzstatus"

@@ -82,11 +82,6 @@ class EntityManagerController extends AbstractListener
      */
     protected function setValueOfParam(string $scope, string $param, bool $value): void
     {
-        // prepare data
-        $data = $this
-            ->getContainer()
-            ->get('metadata')
-            ->get("scopes.{$scope}");
         //set value
         $data[$param] = $value;
 

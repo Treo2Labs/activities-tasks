@@ -164,19 +164,19 @@ class Meeting extends \Espo\Services\Record
             }
         }
 
-        $contacts = $entity->get('contacts');
+        $contacts = $entity->get('contactsStatus');
         foreach ($contacts as $contact) {
             if ($contact->get('emailAddress') && !array_key_exists($contact->get('emailAddress'), $emailHash)) {
-                $invitationManager->sendInvitation($entity, $contact, 'contacts');
+                $invitationManager->sendInvitation($entity, $contact, 'contactsStatus');
                 $emailHash[$user->get('emailAddress')] = true;
                 $sentCount++;
             }
         }
 
-        $leads = $entity->get('leads');
+        $leads = $entity->get('leadsStatus');
         foreach ($leads as $lead) {
             if ($lead->get('emailAddress') && !array_key_exists($lead->get('emailAddress'), $emailHash)) {
-                $invitationManager->sendInvitation($entity, $lead, 'leads');
+                $invitationManager->sendInvitation($entity, $lead, 'leadsStatus');
                 $emailHash[$user->get('emailAddress')] = true;
                 $sentCount++;
             }

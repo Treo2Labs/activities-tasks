@@ -234,10 +234,10 @@ class Lead extends \Treo\Services\Person
         $lead->set('status', 'Converted');
         $entityManager->saveEntity($lead);
 
-        if ($meetings = $lead->get('meetings')) {
+        if ($meetings = $lead->get('meetingsStatus')) {
             foreach ($meetings as $meeting) {
                 if (!empty($contact)) {
-                    $entityManager->getRepository('Meeting')->relate($meeting, 'contacts', $contact);
+                    $entityManager->getRepository('Meeting')->relate($meeting, 'contactsStatus', $contact);
                 }
 
                 if (!empty($opportunity)) {

@@ -17,8 +17,8 @@
         "options": {
           "fieldList": [
             "users",
-            "contacts",
-            "leads"
+            "contactsStatus",
+            "leadsStatus"
           ]
         },
         "isForm": true,
@@ -98,5 +98,6 @@
       }
     }
   },
-  "iconClass": "fas fa-briefcase"
+  "iconClass": "fas fa-briefcase",
+  "viewSendInvitations" : false
 }

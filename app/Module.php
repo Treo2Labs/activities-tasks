@@ -32,11 +32,49 @@ use Treo\Core\ModuleManager\AbstractModule;
  */
 class Module extends AbstractModule
 {
+    protected $activitiesRow = [
+        0 => ['name' => 'activitiesEntityList'],
+        1 => ['name' => 'historyEntityList']
+    ];
+
     /**
      * @inheritdoc
      */
     public static function getLoadOrder(): int
     {
         return 100;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function loadLayouts(string $scope, string $name, array &$data)
+    {
+        if ($scope == 'Settings') {
+            if (array_search('Activities', array_column($data, 'label')) === false) {
+                $item = ['label' => 'Activities'];
+                $this->addRowActivities($item);
+                $data[] = $item;
+            } else {
+                foreach ($data as &$item) {
+                    if ($item['label'] === 'Activities') {
+                        $this->addRowActivities($item);
+                    }
+                }
+            }
+        }
+        parent::loadLayouts($scope, $name, $data);
+    }
+
+    /**
+     * @param $item
+     */
+    private function addRowActivities(&$item) :void
+    {
+        if (isset($item['rows']) && is_array($item['rows'])) {
+            array_unshift($item['rows'], $this->activitiesRow) ;
+        } else {
+            $item['rows'][] = $this->activitiesRow;
+        }
     }
 }

@@ -34,7 +34,6 @@ use Treo\Listeners\AbstractListener;
  */
 class Metadata extends AbstractListener
 {
-
     /**
      * Modify
      *
@@ -53,6 +52,11 @@ class Metadata extends AbstractListener
 
         // add tasks
         $this->addTasks($data);
+
+        $this->addLinkContactEntityStatus($data, 'Meeting');
+        $this->addLinkContactEntityStatus($data, 'Call');
+
+        $this->addFieldsToSettings($data);
 
         $event->setArgument('data', $data);
     }
@@ -144,6 +148,72 @@ class Metadata extends AbstractListener
                 }
             }
         }
+    }
+
+    /**
+     * @param $data
+     */
+    protected function addFieldsToSettings($data) :void
+    {
+        $data['entityDefs']['Settings']['fields'][] =
+            [
+                "activitiesEntityList" => [
+                    "type" => "multiEnum",
+                    "view" => "views/settings/fields/activities-entity-list"
+                ]
+            ];
+
+        $data['entityDefs']['Settings']['fields'][] =
+            [
+                "historyEntityList" => [
+                    "type" => "multiEnum",
+                    "view" => "views/settings/fields/history-entity-list"
+                ]
+            ];
+    }
+
+    /**
+     * @param $data
+     * @param string $entity
+     */
+    protected function addLinkContactEntityStatus(&$data, string $entity) :void
+    {
+        $entityStatus = mb_strtolower($entity) . 'sStatus';
+        $data['entityDefs'][$entity]['fields']['contactsStatus'] =
+            [
+                'type' => 'linkMultiple',
+                'layoutDetailDisabled' => true,
+                'layoutListDisabled' => true,
+                'view' => 'activitiestasks:views/meeting/fields/contacts',
+                'columns' =>
+                    [
+                        'status' => 'acceptanceStatus',
+                    ],
+                'orderBy' => 'name',
+                'exportDisabled' => true,
+            ];
+
+        $data['entityDefs'][$entity]['links']['contactsStatus'] =
+            [
+                'type' => 'hasMany',
+                'relationName' => "contact{$entity}Status",
+                'entity' => 'Contact',
+                'foreign' => $entityStatus,
+                'additionalColumns' => [
+                    'status' => [
+                        'type' => 'varchar',
+                        'len' => '36',
+                        "default" => "None"
+                    ]
+                ]
+            ];
+        $data['entityDefs']['Contact']['links'][$entityStatus] =
+            [
+                'type' => 'hasMany',
+                'relationName' => "contact{$entity}Status",
+                'entity' => $entity,
+                'foreign' => 'contactsStatus',
+            ];
     }
 
     /**
