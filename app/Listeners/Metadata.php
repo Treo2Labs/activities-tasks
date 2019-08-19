@@ -53,6 +53,10 @@ class Metadata extends AbstractListener
         // add tasks
         $this->addTasks($data);
 
+        $this->addLinkContactMeetingStatus($data);
+
+        $this->addFieldsToSettings($data);
+
         $event->setArgument('data', $data);
     }
 
@@ -143,6 +147,70 @@ class Metadata extends AbstractListener
                 }
             }
         }
+    }
+
+    /**
+     * @param $data
+     */
+    protected function addFieldsToSettings($data) :void
+    {
+        $data['entityDefs']['Settings']['fields'][] =
+            [
+                "activitiesEntityList" => [
+                    "type" => "multiEnum",
+                    "view" => "views/settings/fields/activities-entity-list"
+                ]
+            ];
+
+        $data['entityDefs']['Settings']['fields'][] =
+            [
+                "historyEntityList" => [
+                    "type" => "multiEnum",
+                    "view" => "views/settings/fields/history-entity-list"
+                ]
+            ];
+    }
+
+    /**
+     * @param $data
+     */
+    protected function addLinkContactMeetingStatus(&$data) :void
+    {
+        $data['entityDefs']['Meeting']['fields']['contactsStatus'] =
+            [
+                'type' => 'linkMultiple',
+                'layoutDetailDisabled' => true,
+                'layoutListDisabled' => true,
+                'view' => 'activitiestasks:views/meeting/fields/contacts',
+                'columns' =>
+                    [
+                        'status' => 'acceptanceStatus',
+                    ],
+                'orderBy' => 'name',
+                'exportDisabled' => true,
+            ];
+
+        $data['entityDefs']['Meeting']['links']['contactsStatus'] =
+            [
+                'type' => 'hasMany',
+                'relationName' => 'contactMeetingStatus',
+                'entity' => 'Contact',
+                'foreign' => 'meetingsStatus',
+                'additionalColumns' => [
+                    'status' => [
+                        'type' => 'varchar',
+                        'len' => '36',
+                        "default" => "None"
+                    ]
+                ]
+            ];
+        $data['entityDefs']['Contact']['links']['meetingsStatus'] =
+            [
+                'type' => 'hasMany',
+                'relationName' => 'contactMeetingStatus',
+                'entity' => 'Meeting',
+                'foreign' => 'contactsStatus',
+            ];
     }
 
     /**

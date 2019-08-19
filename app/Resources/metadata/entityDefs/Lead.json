@@ -216,6 +216,13 @@
       "layoutRelationshipsDisabled": true,
       "audited": true
     },
+    "meetingsStatus": {
+      "type": "hasMany",
+      "entity": "Meeting",
+      "foreign": "leadsStatus",
+      "layoutRelationshipsDisabled": true,
+      "audited": true
+    },
     "calls": {
       "type": "hasMany",
       "entity": "Call",

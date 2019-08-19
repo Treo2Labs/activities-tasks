@@ -64,15 +64,14 @@ Espo.define('activitiestasks:views/meeting/detail', 'views/detail', function (De
 
             if (show) {
                 var userIdList = this.model.getLinkMultipleIdList('users');
-                var contactIdList = this.model.getLinkMultipleIdList('contacts');
-                var leadIdList = this.model.getLinkMultipleIdList('leads');
+                var contactIdList = this.model.getLinkMultipleIdList('contactsStatus');
+                var leadIdList = this.model.getLinkMultipleIdList('leadsStatus');
 
                 if (!contactIdList.length && !leadIdList.length && !userIdList.length) {
                     show = false;
                 }
             }
-
-            if (show) {
+            if (show && this.getMetadata().get('clientDefs.Meeting.viewSendInvitations')) {
                 this.addMenuItem('buttons', {
                     label: 'Send Invitations',
                     action: 'sendInvitations',

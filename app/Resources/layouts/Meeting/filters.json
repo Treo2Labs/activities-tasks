@@ -9,6 +9,6 @@
   "status",
   "parent",
   "users",
-  "contacts",
-  "leads"
+  "contactsStatus",
+  "leadsStatus"
 ]

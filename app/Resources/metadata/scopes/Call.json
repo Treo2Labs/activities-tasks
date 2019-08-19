@@ -1,7 +1,7 @@
 {
-    "entity": true,
-    "layouts": true,
-    "tab": true,
+  "entity": true,
+  "layouts": true,
+  "tab": true,
   "acl": true,
   "aclPortal": "recordAllAccountContactOwnNo",
   "module": "ActivitiesTasks",
