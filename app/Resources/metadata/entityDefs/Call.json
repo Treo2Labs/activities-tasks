@@ -217,7 +217,7 @@
     },
     "contacts": {
       "type": "hasMany",
-      "entity": "Lead",
+      "entity": "Contact",
       "foreign": "calls"
     },
     "contactsStatus": {
