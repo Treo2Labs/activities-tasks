@@ -106,6 +106,10 @@ Espo.define('activitiestasks:views/record/panels/activities', ['views/record/pan
         },
 
         setup: function () {
+            this.setupActionPanel();
+        },
+
+        setupActionPanel() {
             this.currentTab = this.getStorage().get('state', this.getStorageKey()) || 'all';
 
             this.scopeList = this.getConfig().get(this.name + 'EntityList') || [];
@@ -138,12 +142,12 @@ Espo.define('activitiestasks:views/record/panels/activities', ['views/record/pan
             this.seeds = {};
 
             this.wait(true);
-            var i = 0;
-            this.scopeList.forEach(function (scope) {
+
+            this.scopeList.forEach(function (scope, i) {
                 this.getModelFactory().getSeed(scope, function (seed) {
                     this.seeds[scope] = seed;
-                    i++;
-                    if (i == this.scopeList.length) {
+                    
+                    if (i == this.scopeList.length - 1) {
                         this.wait(false);
                     }
                 }.bind(this));
@@ -463,7 +467,12 @@ Espo.define('activitiestasks:views/record/panels/activities', ['views/record/pan
         },
 
         actionRefresh: function () {
-            this.collection.fetch();
+            this.getConfig().fetch().then(() => {
+                this.setupActionPanel();
+                this.collection.seeds = this.seeds || {};
+                this.reRender(true);
+                this.collection.fetch();
+            });
         },
 
         actionSetHeld: function (data) {
